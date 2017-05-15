@@ -1,3 +1,25 @@
+function CppCliDLL(projectName)
+	project "Cli"
+		kind "SharedLib"
+		language "C++"
+		clr "On"
+		dotnetframework "4.6.1"
+		targetdir "bin/%{cfg.buildcfg}"
+		systemversion "10.0.15063.0"
+
+		files { projectName .. "/**.h", projectName .. "/**.cpp" }
+
+		filter "configurations:Debug"
+			defines { "DEBUG" }
+			symbols "On"
+
+		filter "configurations:Release"
+			defines { "NDEBUG" }
+			optimize "On"
+
+		filter {}
+end
+
 workspace "HelloWorld"
 	platforms { "x64" }
     configurations { "Debug", "Release" }
@@ -20,28 +42,9 @@ project "HelloWorld"
         defines { "NDEBUG" }
         optimize "On"
 
-
-project "Cli"
-	kind "SharedLib"
-	language "C++"
-	clr "On"
-	dotnetframework "4.6.1"
-    targetdir "bin/%{cfg.buildcfg}"
-	systemversion "10.0.15063.0"
-
-    files { "cli/**.h", "cli/**.cpp" }
-
+CppCliDLL "Cli"
 	links { "Global" }
-
 	includedirs { "Global" }
-
-    filter "configurations:Debug"
-        defines { "DEBUG" }
-        symbols "On"
-
-    filter "configurations:Release"
-        defines { "NDEBUG" }
-        optimize "On"
 
 project "CliExe"
 	kind "WindowedApp"
