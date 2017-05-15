@@ -3,18 +3,9 @@ function cppCliDll(projectName)
 		kind "SharedLib"
 		language "C++"
 		clr "On"
+		processProperties()
 
 		projectFiles(projectName)
-
-		filter "configurations:Debug"
-			defines { "DEBUG" }
-			symbols "On"
-
-		filter "configurations:Release"
-			defines { "NDEBUG" }
-			optimize "On"
-
-		filter {}
 end
 
 function cppCliExe(projectName)
@@ -23,40 +14,46 @@ function cppCliExe(projectName)
 		language "C++"
 		clr "On"
 		entrypoint "Main"
+		guiProperties()
 
 		projectFiles(projectName)
-
-		filter "configurations:Debug"
-			defines { "DEBUG" }
-			symbols "On"
-
-		filter "configurations:Release"
-			defines { "NDEBUG" }
-			optimize "On"
-
-		filter {}
 end
 
 function cppDll(projectName)
 	project(projectName)
 		kind "SharedLib"
 		language "C++"
+		guiProperties()
 
 		projectFiles(projectName)
-
-		filter "configurations:Debug"
-			defines { "DEBUG" }
-			symbols "On"
-
-		filter "configurations:Release"
-			defines { "NDEBUG" }
-			optimize "On"
-
-		filter {}
 end
 
 function projectFiles(projectName)
 	files { projectName .. "/**.h", projectName .. "/**.cpp" }
+end
+
+function processProperties()
+	filter "configurations:Debug"
+		defines { "DEBUG" }
+		symbols "On"
+
+	filter "configurations:Release"
+		defines { "NDEBUG" }
+		optimize "On"
+
+	filter {}
+end
+
+function guiProperties()
+	filter "configurations:Debug"
+		defines { "DEBUG" }
+		symbols "On"
+
+	filter "configurations:Release"
+		defines { "NDEBUG" }
+		optimize "On"
+
+	filter {}
 end
 
 workspace "HelloWorld"
@@ -67,6 +64,15 @@ workspace "HelloWorld"
 	systemversion "10.0.15063.0"
 	location "build"
 	targetdir "bin/%{cfg.buildcfg}"
+
+cppCliDll "Cli"
+	links { "Global" }
+	includedirs { "Global" }
+
+cppCliExe "CliExe"
+	links { "System.Windows.Forms.dll", "cli" }
+
+cppDll("Global")
 
 project "HelloWorld"
     kind "ConsoleApp"
@@ -81,12 +87,3 @@ project "HelloWorld"
     filter "configurations:Release"
         defines { "NDEBUG" }
         optimize "On"
-
-cppCliDll "Cli"
-	links { "Global" }
-	includedirs { "Global" }
-
-cppCliExe "CliExe"
-	links { "System.Windows.Forms.dll", "cli" }
-
-cppDll("Global")
