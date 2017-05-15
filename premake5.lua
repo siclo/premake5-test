@@ -2,6 +2,8 @@ workspace "HelloWorld"
 	platforms { "x64" }
     configurations { "Debug", "Release" }
 
+	location "build"
+
 project "HelloWorld"
     kind "ConsoleApp"
     language "C++"
