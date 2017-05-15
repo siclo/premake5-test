@@ -1,5 +1,5 @@
 #include "cli.h"
-#include "../global/blou.h"
+#include "blou.h"
 namespace Cli
 {
 	System::String^ Cli::Lol()

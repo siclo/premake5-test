@@ -33,6 +33,8 @@ project "Cli"
 
 	links { "Global" }
 
+	includedirs { "Global" }
+
     filter "configurations:Debug"
         defines { "DEBUG" }
         symbols "On"
