@@ -1,10 +1,10 @@
-function CppCliDLL(projectName)
-	project "Cli"
+function cppCliDll(projectName)
+	project(projectName)
 		kind "SharedLib"
 		language "C++"
 		clr "On"
 
-		files { projectName .. "/**.h", projectName .. "/**.cpp" }
+		projectFiles(projectName)
 
 		filter "configurations:Debug"
 			defines { "DEBUG" }
@@ -15,6 +15,48 @@ function CppCliDLL(projectName)
 			optimize "On"
 
 		filter {}
+end
+
+function cppCliExe(projectName)
+	project(projectName)
+		kind "WindowedApp"
+		language "C++"
+		clr "On"
+		entrypoint "Main"
+
+		projectFiles(projectName)
+
+		filter "configurations:Debug"
+			defines { "DEBUG" }
+			symbols "On"
+
+		filter "configurations:Release"
+			defines { "NDEBUG" }
+			optimize "On"
+
+		filter {}
+end
+
+function cppDll(projectName)
+	project(projectName)
+		kind "SharedLib"
+		language "C++"
+
+		projectFiles(projectName)
+
+		filter "configurations:Debug"
+			defines { "DEBUG" }
+			symbols "On"
+
+		filter "configurations:Release"
+			defines { "NDEBUG" }
+			optimize "On"
+
+		filter {}
+end
+
+function projectFiles(projectName)
+	files { projectName .. "/**.h", projectName .. "/**.cpp" }
 end
 
 workspace "HelloWorld"
@@ -40,38 +82,11 @@ project "HelloWorld"
         defines { "NDEBUG" }
         optimize "On"
 
-CppCliDLL "Cli"
+cppCliDll "Cli"
 	links { "Global" }
 	includedirs { "Global" }
 
-project "CliExe"
-	kind "WindowedApp"
-	language "C++"
-	clr "On"
-	entrypoint "Main"
-
-    files { "cliexe/**.h", "cliexe/**.cpp" }
-
+cppCliExe "CliExe"
 	links { "System.Windows.Forms.dll", "cli" }
 
-    filter "configurations:Debug"
-        defines { "DEBUG" }
-        symbols "On"
-
-    filter "configurations:Release"
-        defines { "NDEBUG" }
-        optimize "On"
-
-project "Global"
-	kind "SharedLib"
-	language "C++"
-
-    files { "global/**.h", "global/**.cpp" }
-
-    filter "configurations:Debug"
-        defines { "DEBUG" }
-        symbols "On"
-
-    filter "configurations:Release"
-        defines { "NDEBUG" }
-        optimize "On"
+cppDll("Global")
