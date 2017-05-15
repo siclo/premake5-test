@@ -3,9 +3,6 @@ function CppCliDLL(projectName)
 		kind "SharedLib"
 		language "C++"
 		clr "On"
-		dotnetframework "4.6.1"
-		targetdir "bin/%{cfg.buildcfg}"
-		systemversion "10.0.15063.0"
 
 		files { projectName .. "/**.h", projectName .. "/**.cpp" }
 
@@ -24,13 +21,14 @@ workspace "HelloWorld"
 	platforms { "x64" }
     configurations { "Debug", "Release" }
 
+	dotnetframework "4.6.1"
+	systemversion "10.0.15063.0"
 	location "build"
+	targetdir "bin/%{cfg.buildcfg}"
 
 project "HelloWorld"
     kind "ConsoleApp"
     language "C++"
-    targetdir "bin/%{cfg.buildcfg}"
-	systemversion "10.0.15063.0"
 
     files { "hello/**.h", "hello/**.cpp" }
 
@@ -50,9 +48,6 @@ project "CliExe"
 	kind "WindowedApp"
 	language "C++"
 	clr "On"
-	dotnetframework "4.6.1"
-	targetdir "bin/%{cfg.buildcfg}"
-	systemversion "10.0.15063.0"
 	entrypoint "Main"
 
     files { "cliexe/**.h", "cliexe/**.cpp" }
@@ -70,8 +65,6 @@ project "CliExe"
 project "Global"
 	kind "SharedLib"
 	language "C++"
-    targetdir "bin/%{cfg.buildcfg}"
-	systemversion "10.0.15063.0"
 
     files { "global/**.h", "global/**.cpp" }
 
